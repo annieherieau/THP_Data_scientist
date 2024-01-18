@@ -116,10 +116,16 @@ def perform
   # hash pour stocker les résultats
   data_stats={}
   
-    user_input = 0
-    while !user_input.between?(1,8)
-      user_input = gets.chomp.to_i
-    end
+  # l'utilisatuer rentre un numéro de question
+  #TODO faire le menu
+  Puts "entre un numéro entre 1 et 8 : "
+  user_input = 0
+  while !user_input.between?(1,8)
+    user_input = gets.chomp.to_i
+  end
+
+  # lance 1 méthode en fonction de numéro du menu
+  #TODO l'encapsuler dans une methode
     case user_input
     when 1
       generate_stats_hash(data_stats, 1, "Nombre de handles (uniques)", find_nb_of_handles(journalists))
@@ -140,7 +146,8 @@ def perform
     else
       user_input= gets.chomp.to_i
     end
-  # puts print_hash(data_stats)
+
+  # imprime les résultats de la question
   puts print_hash(data_stats[user_input])
 
 end
