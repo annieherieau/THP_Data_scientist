@@ -24,9 +24,9 @@ end
 # 2- le handle le plus court >> return String
 def find_the_shorter(array)
   #trier l'array par taille croissante
-  result = sort_by_length(array)
+  result = array.min_by{|item| item.length}
   # renvoyer le 1er item
-  return result.first
+  return result
 end
 
 # 3- Nombre de handle contenant 5 caractères (@ exclu) >> return Integer
@@ -88,59 +88,108 @@ def print_array(array)
 end
 
 # créer le hash les stats >> return Hash
-def generate_stats_hash(hash, menu, label, result)
+def generate_stats_hash(menu, result)
   # puts result.class
   hash[menu]= {label => result}
   return hash
 end
 
-# Afficher le menu
-def menu
-menu=new.hash
+# Afficher le menu >> puts + return Hash
+def print_menu
+menu= Hash.new(0)
 menu[1]="Nombre de handles (uniques)"
+menu[2]="Le handle le plus court"
+menu[3]="Nombre de handle contenant 5 caractères"
+menu[4]="Nombre de handle commançant par une mujuscule"
+menu[5]="Tri par ordre alphabétique"
+menu[6]="Tri par longueur"
+menu[7]="Recherche position de @epenser"
+menu[8]="Répartition par longueur"
 
+# affichage
+menu.each{|key, value| puts "#{key} - #{value}"}
+
+return menu
 end
 
-#___________ P E R F O R M ___________
-def perform
-  # hash pour stocker les résultats
-  menu
-
-  # l'utilisatuer rentre un numéro de question
+# User input: entre le numéro de question >> return Integer
+def get_user_input
+    # l'utilisatuer rentre un numéro de question
   #TODO faire le menu
-  puts "Entre un numéro entre 1 et 8 : "
+  puts "\nEntre un numéro entre 1 et 8 : "
   user_input = 0
   while !user_input.between?(1,8)
     user_input = gets.chomp.to_i
   end
+ return user_input
+end
 
+# selection / execution de la question en fonction du choix du user
+def menu_select(menu, num, array)
   # lance 1 méthode en fonction de numéro du menu
-  #TODO l'encapsuler dans une methode
-    case user_input
-    when 1
-      generate_stats_hash(data_stats, 1, "Nombre de handles (uniques)", find_nb_of_handles(journalists))
-    when 2
-      generate_stats_hash(data_stats, 2, "Le handle le plus court",  find_the_shorter(journalists))
-    when 3
-      generate_stats_hash(data_stats, 3, "Nombre de handle contenant 5 caractères", find_nb_of_xcaract(journalists, 5))
-    when 4
-      generate_stats_hash(data_stats, 4, "Nombre de handle commançant par une mujuscule" ,  find_nb_of_capitalized(journalists))
-    when 5
-      generate_stats_hash(data_stats, 5, "Tri par ordre alphabétique",  find_nb_of_capitalized(journalists))
-    when 6
-      generate_stats_hash(data_stats, 6, "Tri par longueur",  print_array(sort_by_length(journalists)))
-    when 7
-      generate_stats_hash(data_stats, 7, "Position de @epenser",  find_index(journalists, "@epenser"))
-    when 8
-      generate_stats_hash(data_stats, 8, "Répartition par longueur", length_distribution(journalists))
-    else
-      user_input= gets.chomp.to_i
+  case num
+  when 1
+    puts "#{menu[num]} : #{find_nb_of_handles(array)}"
+  
+  when 2
+    puts "#{menu[num]} : #{find_the_shorter(array)}"
+  
+  when 3
+    # demande le nombre de caractères
+    print "Entre le nombre de caractères : "
+    nb_caract =0
+    while nb_caract ==0
+      nb_caract = gets.chomp.to_i
     end
 
-  # imprime les résultats de la question
-  puts print_hash(data_stats[user_input])
+    puts "#{menu[num]} : #{find_nb_of_xcaract(array, nb_caract)}"
+  
+  when 4
+    puts "#{menu[num]} : \n #{find_nb_of_capitalized(array)}"
+ 
+  when 5
+    puts "#{menu[num]} : "
+    puts sort_by_alpha(array)
+  
+  when 6
+    puts "#{menu[num]} : "
+    puts sort_by_length(array)
+  
+  when 7
+    # demande le handle à rechercher
+    print "Entre le handle à rechercher : "
+    hendle =""
+    while hendle ==""
+      hendle = gets.chomp
+    end
+
+    puts "#{menu[num]} : #{find_index(array, hendle)}"
+  
+  when 8
+    puts "#{menu[num]} : "
+    length_distribution(array).each { |k, v| puts "#{k.to_s.rjust(2, " ")} caract. : #{v} mots"}
+  else
+    num_menu = get_user_input
+  end
+end
+
+
+#___________ P E R F O R M ___________
+def perform
+  # hash pour stocker les résultats
+  data_stats={}
+
+  # affiche du menu des questions
+  menu = print_menu
+
+  #choix de l'utilisateur
+  num_menu = get_user_input
+
+  # calcule et imprime les résultats de la question
+  menu_select(menu, num_menu, journalists)
 
 end
+
 #_________ EXECUTE ________
 
 perform
