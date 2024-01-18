@@ -176,8 +176,6 @@ end
 
 #___________ P E R F O R M ___________
 def perform
-  # hash pour stocker les résultats
-  data_stats={}
 
   # affiche du menu des questions
   menu = print_menu
