@@ -118,7 +118,7 @@ def perform
   
   # l'utilisatuer rentre un numéro de question
   #TODO faire le menu
-  Puts "entre un numéro entre 1 et 8 : "
+  Puts "Entre un numéro entre 1 et 8 : "
   user_input = 0
   while !user_input.between?(1,8)
     user_input = gets.chomp.to_i
