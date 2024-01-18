@@ -97,14 +97,15 @@ end
 # Afficher le menu
 def menu
 menu=new.hash
-menu[1]
+menu[1]="Nombre de handles (uniques)"
+
 end
 
 #___________ P E R F O R M ___________
 def perform
   # hash pour stocker les résultats
-  data_stats={}
-  
+  menu
+
   # l'utilisatuer rentre un numéro de question
   #TODO faire le menu
   puts "Entre un numéro entre 1 et 8 : "

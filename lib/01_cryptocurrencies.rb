@@ -31,7 +31,7 @@ end
 # 3. cours (rate) inférieure à 6000 >> return Hash
 def rate_under(hash, border)
    border
-result = hash.filter{ |key, value| value.to_i < border}
+result = hash.filter{ |key, value| value < border}
 return result
 end
 
