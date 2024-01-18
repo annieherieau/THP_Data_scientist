@@ -3,7 +3,7 @@ require_relative "./arrays.rb"
 
 # ____________METHODS__________
 
-# 0- Nettoyer les data (bulshit) >> return  Array 
+# Nettoyer les data (bulshit) >> return  Array 
 def clean_data(array)
   # garder les items commençant par @
   new_array = array.filter{|item| item[0]=="@"}
@@ -94,13 +94,14 @@ def generate_stats_hash(hash, menu, label, result)
   return hash
 end
 
-
+# Afficher le menu
+def menu
+menu=new.hash
+menu[1]
+end
 
 #___________ P E R F O R M ___________
 def perform
-  # utliser un array clean
-  journalists = clean_data(big_data_array)
-
   # hash pour stocker les résultats
   data_stats={}
   
