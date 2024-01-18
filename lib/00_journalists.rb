@@ -25,7 +25,6 @@ end
 def find_the_shorter(array)
   #trier l'array par taille croissante
   result = sort_by_length(array)
-
   # renvoyer le 1er item
   return result.first
 end
@@ -38,8 +37,8 @@ end
 
 # 4- Nombre de handles commençant par une majuscule >> return Integer
 def find_nb_of_capitalized(array)
-  result_array = array.filter {|item| /[[:upper:]]/.match(item[1])}
-  return result_array.length
+  result = array.count{ |item|  /[[:upper:]]/.match(item[1]) }
+  return result
 end 
 
 # 5. Trie par ordre alphabétique (non sensible à la casse) >> return Array
@@ -107,7 +106,7 @@ def perform
   
   # l'utilisatuer rentre un numéro de question
   #TODO faire le menu
-  Puts "Entre un numéro entre 1 et 8 : "
+  puts "Entre un numéro entre 1 et 8 : "
   user_input = 0
   while !user_input.between?(1,8)
     user_input = gets.chomp.to_i
@@ -123,7 +122,7 @@ def perform
     when 3
       generate_stats_hash(data_stats, 3, "Nombre de handle contenant 5 caractères", find_nb_of_xcaract(journalists, 5))
     when 4
-      generate_stats_hash(data_stats, 4, "Nombre de handle commançant par une" ,  find_nb_of_capitalized(journalists))
+      generate_stats_hash(data_stats, 4, "Nombre de handle commançant par une mujuscule" ,  find_nb_of_capitalized(journalists))
     when 5
       generate_stats_hash(data_stats, 5, "Tri par ordre alphabétique",  find_nb_of_capitalized(journalists))
     when 6
