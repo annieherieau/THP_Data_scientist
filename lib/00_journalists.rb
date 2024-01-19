@@ -59,7 +59,7 @@ def sort_by_length(array)
   return array.sort_by{|handle| handle.length}
 end
 
-# 7. Position (index) de la personne @epenser ? >> return Integer
+# 7. Position (index) de la personne @epenser ? >> return Integer ou String
 def find_index(array)
   # demande le handle à rechercher
   print "Entre le handle à rechercher (avec @): "
@@ -67,7 +67,10 @@ def find_index(array)
   while search_string[0] != "@"
     search_string = gets.chomp
   end
-  return array.index{|element| element == search_string}
+
+  result = array.index{|element| element == search_string}
+  return result ? result : "Aucun élément trouvé"
+
 end
 
 # 8. Répartition par longueur de caractères >> return Hash
@@ -188,9 +191,6 @@ end
 
 #___________ P E R F O R M ___________
 def perform
-  quit = "0"
-  while quit != "q"
-
   quit = ""
   while quit != "q"
     system("clear")
