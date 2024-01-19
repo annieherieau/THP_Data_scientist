@@ -2,9 +2,8 @@
 >Projet validant du 18/01/2023
 ## Prog 1 : Big data (journailstes Twitter)
 `
--
  ***  BIG DATA Handles Twitter   ***
--
+
 1 - Nombre de handles des journalistes
 2 - Le handle le plus court
 3 - Nombre de handles contenant 5 caractères
@@ -16,7 +15,7 @@
 
 Entre un numéro entre 1 et 8 : 1
 Nombre de handles des journalistes : 381
--
+
 > pour QUITTER : Appuie sur 'q' ou 'Q'
 > pour CONTINUER : Appuie sur 'Entrer'
 q
