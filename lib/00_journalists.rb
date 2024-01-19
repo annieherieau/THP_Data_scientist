@@ -5,8 +5,8 @@ require_relative "./arrays.rb"
 
 # Nettoyer les data (bulshit) >> return  Array 
 def clean_data(array)
-  # garder les items commençant par @
-  new_array = array.filter{|item| item[0]=="@"}
+  # garder les elements commençant par @
+  new_array = array.filter{|element| element[0]=="@"}
 
   # garder les handles uniques
   new_array.uniq!
@@ -16,34 +16,42 @@ end
 
 # 1- Combien de handles? >> return Integer
 def find_nb_of_handles(array)
-
   # compter les entrées commançant par @
-  return array.count{|item| item[0]=="@"}
+  return array.count{|element| element[0]=="@"}
 end
 
 # 2- le handle le plus court >> return String
 def find_the_shorter(array)
   #trier l'array par taille croissante
-  result = array.min_by{|item| item.length}
-  # renvoyer le 1er item
+  result = array.min_by{|element| element.length}
+  # renvoyer le 1er element
   return result
 end
 
-# 3- Nombre de handle contenant 5 caractères (@ exclu) >> return Integer
-# TODO vaudrait mieux exclure le @ au lieu de number+1
-def find_nb_of_xcaract(array, number)
-  return array.count{|item| item.length == number+1} 
+# 3- Nombre de handle contenant x caractères (@ exclu) >> return Integer
+def find_nb_of_xcaract(array, nb_caract)
+  return array.count{|element| element.length == nb_caract+1} 
+end
+
+# demande du nombre de caractères >> return Integer
+def ask_nd_caract
+  print "Entre le nombre de caractères du handle (sans @) : "
+  nb_caract =0
+  while nb_caract ==0
+    nb_caract = gets.chomp.to_i
+  end
+  return nb_caract
 end
 
 # 4- Nombre de handles commençant par une majuscule >> return Integer
 def find_nb_of_capitalized(array)
-  result = array.count{ |item|  /[[:upper:]]/.match(item[1]) }
+  result = array.count{ |element|  /[[:upper:]]/.match(element[1]) }
   return result
 end 
 
 # 5. Trie par ordre alphabétique (non sensible à la casse) >> return Array
 def sort_by_alpha(array)
-return array.sort_by{|item| item.downcase}
+return array.sort_by{|element| element.downcase}
 end
 
 # 6. Trie la liste de handle par taille des handle croissant
@@ -52,8 +60,14 @@ def sort_by_length(array)
 end
 
 # 7. Position (index) de la personne @epenser ? >> return Integer
-def find_index(array, search_string)
-  return array.index{|item| item == search_string}
+def find_index(array)
+  # demande le handle à rechercher
+  print "Entre le handle à rechercher (avec @): "
+  search_string =""
+  while search_string[0] != "@"
+    search_string = gets.chomp
+  end
+  return array.index{|element| element == search_string}
 end
 
 # 8. Répartition par longueur de caractères >> return Hash
@@ -75,16 +89,12 @@ def length_distribution(array)
   return result
 end
 
-# affichage d'un hash >> return Array
-def print_hash(hash)
-  array = []
-  hash.each{|key, value| array.push("** #{key} **\n #{value}")}
-  return array
-end
-
-# affichage d'un array sur une ligne >> return String
-def print_array(array)
-  return array.join(" ,")
+# Affichage de la répartition
+def print_distribution(hash, k_label, v_label)
+  hash.each do |k, v| 
+    v == 1 ? s = "" : s = "s"
+    puts "#{k} #{k_label} : #{v} #{v_label}#{s}" 
+  end
 end
 
 # créer le hash les stats >> return Hash
@@ -94,17 +104,25 @@ def generate_stats_hash(menu, result)
   return hash
 end
 
+def print_titre
+  puts "______________________________"
+  puts ""
+  puts "   BIG DATA Handles Twitter   "
+  puts "______________________________"
+  puts ""
+end
+
 # Afficher le menu >> puts + return Hash
 def print_menu
 menu= Hash.new(0)
-menu[1]="Nombre de handles (uniques)"
+menu[1]="Nombre de handles des journalistes"
 menu[2]="Le handle le plus court"
-menu[3]="Nombre de handle contenant 5 caractères"
-menu[4]="Nombre de handle commançant par une mujuscule"
-menu[5]="Tri par ordre alphabétique"
-menu[6]="Tri par longueur"
-menu[7]="Recherche position de @epenser"
-menu[8]="Répartition par longueur"
+menu[3]="Nombre de handles contenant n caractères"
+menu[4]="Nombre de handles commançant par une majuscule"
+menu[5]="Tri des handles par ordre alphabétique"
+menu[6]="Tri des handles par longueur"
+menu[7]="Recherche position d'un handle @xxxx"
+menu[8]="Répartition des handles par longueur"
 
 # affichage
 menu.each{|key, value| puts "#{key} - #{value}"}
@@ -135,17 +153,10 @@ def menu_select(menu, num, array)
     puts "#{menu[num]} : #{find_the_shorter(array)}"
   
   when 3
-    # demande le nombre de caractères
-    print "Entre le nombre de caractères : "
-    nb_caract =0
-    while nb_caract ==0
-      nb_caract = gets.chomp.to_i
-    end
-
-    puts "#{menu[num]} : #{find_nb_of_xcaract(array, nb_caract)}"
+    puts "#{menu[num]} : #{find_nb_of_xcaract(array, ask_nd_caract)}"
   
   when 4
-    puts "#{menu[num]} : \n #{find_nb_of_capitalized(array)}"
+    puts "#{menu[num]} : #{find_nb_of_capitalized(array)}"
  
   when 5
     puts "#{menu[num]} : "
@@ -156,54 +167,48 @@ def menu_select(menu, num, array)
     puts sort_by_length(array)
   
   when 7
-    # demande le handle à rechercher
-    print "Entre le handle à rechercher : "
-    hendle =""
-    while hendle ==""
-      hendle = gets.chomp
-    end
-
-    puts "#{menu[num]} : #{find_index(array, hendle)}"
+    puts "#{menu[num]} : #{find_index(array)}"
   
   when 8
     puts "#{menu[num]} : "
-    length_distribution(array).each { |k, v| puts "#{k.to_s.rjust(2, " ")} caract. : #{v} mots"}
+    print_distribution(length_distribution(array), "caract.", "mot")
   else
     num_menu = get_user_input
   end
 end
 
+def go_next
+  # puts "> pour CLEAR ta console : Appuie sur 'c' ou 'C'"
+  puts "> pour QUITTER : Appuie sur 'q' ou 'Q'"
+  puts "> pour CONTINUER : Appuie sur 'Entrer'"
+  user_quit = gets.chomp.downcase
+  if user_quit == "c" then system("clear")end
+  return user_quit
+end
 
 #___________ P E R F O R M ___________
 def perform
-  pg =0
-  while pg=0
+  quit = "0"
+  while quit != "q"
+
     system("clear")
-    # affiche du menu des questions
+    # affiche du titre et Menu des questions
+    print_titre
     menu = print_menu
     #choix de l'utilisateur
     num_menu = get_user_input
     # calcule et imprime les résultats de la question
     menu_select(menu, num_menu, journalists)
-    puts "(PS, pensez a ctrl + L(windows) ou cmd + K (Mac) pour clear votre console)"
-    puts gets.chomp   
+    puts "____________________________________"
+    puts ""
+
+    # Passer à la suite
+    quit = go_next
+
   end
+  puts "Tu peux reprendre une activité normale !\n Ciao, bon dimanche 👋 🤓"
 end
 
 #_________ EXECUTE ________
 
 perform
-
-#TODO
-#(PS, pensez a ctrl + L(windows) ou cmd + K (Mac) pour clear votre console)
-
-#__________ TESTS ___________
-# puts bulshit_array.length
-# puts clean_data(bulshit_array).length
-# puts bulshit_array.length
-# puts find_nb_of_handles(bulshit_array)
-# puts sort_by_length(bulshit_array)
-# cap = find_nb_of_capitalized(["@aertRh", "@Azert", "@azer"])
-# puts cap.length
-# puts sort_by_alpha(bulshit_array)
-# puts length_distribution(["@aertRh", "@Azert", "@azer"])
