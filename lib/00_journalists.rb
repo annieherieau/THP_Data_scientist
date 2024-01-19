@@ -176,23 +176,26 @@ end
 
 #___________ P E R F O R M ___________
 def perform
-
-  # affiche du menu des questions
-  menu = print_menu
-
-  #choix de l'utilisateur
-  num_menu = get_user_input
-
-  # calcule et imprime les résultats de la question
-  menu_select(menu, num_menu, journalists)
-
+  pg =0
+  while pg=0
+    system("clear")
+    # affiche du menu des questions
+    menu = print_menu
+    #choix de l'utilisateur
+    num_menu = get_user_input
+    # calcule et imprime les résultats de la question
+    menu_select(menu, num_menu, journalists)
+    puts "(PS, pensez a ctrl + L(windows) ou cmd + K (Mac) pour clear votre console)"
+    puts gets.chomp   
+  end
 end
 
 #_________ EXECUTE ________
 
 perform
 
-
+#TODO
+#(PS, pensez a ctrl + L(windows) ou cmd + K (Mac) pour clear votre console)
 
 #__________ TESTS ___________
 # puts bulshit_array.length
