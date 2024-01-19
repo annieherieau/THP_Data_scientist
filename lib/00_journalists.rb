@@ -94,6 +94,13 @@ def generate_stats_hash(menu, result)
   return hash
 end
 
+def print_titre
+  puts "____________________________________"
+  puts ""
+  puts " ******   PROJET BIG DATA    *****"
+  puts "____________________________________"
+  puts ""
+end
 # Afficher le menu >> puts + return Hash
 def print_menu
 menu= Hash.new(0)
@@ -176,18 +183,27 @@ end
 
 #___________ P E R F O R M ___________
 def perform
-  pg =0
-  while pg=0
+  quit = ""
+  while quit != "q"
     system("clear")
-    # affiche du menu des questions
+
+    # affiche du titre et Menu des questions
+    print_titre
     menu = print_menu
+    puts "____________________________________"
+    
     #choix de l'utilisateur
     num_menu = get_user_input
+    
     # calcule et imprime les résultats de la question
     menu_select(menu, num_menu, journalists)
-    puts "(PS, pensez a ctrl + L(windows) ou cmd + K (Mac) pour clear votre console)"
-    puts gets.chomp   
+    puts "____________________________________"
+    puts "APPUYEZ SUR 'ENTRER' POUR CONTINUER"
+    puts "> pour clear votre console : ctrl + L(windows) ou cmd + K (Mac)]"
+    puts "> pour quitter : Appuyez sur 'q' ou 'Q'"
+    quit = gets.chomp.downcase!
   end
+  puts "Bye ;)"
 end
 
 #_________ EXECUTE ________
